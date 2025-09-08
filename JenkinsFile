@@ -7,16 +7,39 @@ pipeline{
         disableConcurrentBuilds()
         ansiColor('xterm')
     }
+    environment{
+        def appVersion = ''
+    }
     stages{
-        stage("Install"){
+        stage('Version'){
+            steps{
+                script{
+                    def packageJson = readJSON file: 'package.json'
+                    appVersion = packageJson.version
+                    echo " The app version is : ${appVersion}"
+                }
+            }
+        }
+        stage('Install Dependencies'){
             steps{
                 sh """
-                This is test message
+                    This is test message
+                    echo " The app version is : ${appVersion}"
                     ls -ltr
                     npm install
                 
                 """
             }
+            stage('zip'){
+                steps{
+                    sh """
+                    zip -q -r backend-${appVersion}.zip * -x JenkinsFile -x backend-${appVersion}.zip
+                    ls -ltr
+                    """
+                }
+            }
+
+
         post{
             always {
                 
