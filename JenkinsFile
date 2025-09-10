@@ -26,7 +26,7 @@ pipeline{
         stage('Install Dependencies'){
             steps{
                 sh """
-                    echo "the app version is : ${APP_VERSION}"
+                    echo "the app version is : $APP_VERSION"
                     npm install
                     ls -ltr
                 
