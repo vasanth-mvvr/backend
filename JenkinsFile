@@ -12,23 +12,23 @@ pipeline{
     }
 
     stages{
-        // stage('Version'){
-        //     steps{
-        //         script{
-        //             def packageJson = readJSON file: 'package.json'
-        //             appVersion = packageJson.version
-        //             echo " The app version is : ${appVersion}"
-        //         }
-        //     }
-        // }
+        stage('version'){
+            steps{
+                script{
+                    def packageJson = readJSON file: 'package.json'
+                    appVersion = packageJson.version
+                    echo "the app version is : ${appVersion}"
+                }
+            }
+        }
         stage('Install Dependencies'){
             steps{
                 sh """
+                    echo "the app version is : ${appVersion}"
                     ls -ltr
                     npm install
                 
                 """
-                                    // echo " The app version is : ${appVersion}"
             }
         }
         //     stage('zip'){
@@ -39,15 +39,15 @@ pipeline{
         //             """
         //         }
         //     }
-        stage('test'){
-            steps{
+        // stage('test'){
+        //     steps{
                 
-                sh """
-                ls -ltr
-                echo "this is test stage"
-                """
-            }
-        }
+        //         sh """
+        //         ls -ltr
+        //         echo "this is test stage"
+        //         """
+        //     }
+        // }
         
         }
 
