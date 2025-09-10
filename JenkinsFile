@@ -21,17 +21,16 @@ pipeline{
         //         }
         //     }
         // }
-        // stage('Install Dependencies'){
-        //     steps{
-        //         sh """
-        //             This is test message
-        //             echo " The app version is : ${appVersion}"
-        //             ls -ltr
-        //             npm install
+        stage('Install Dependencies'){
+            steps{
+                sh """
+                    ls -ltr
+                    npm install
                 
-        //         """
-        //     }
-        // }
+                """
+                                    // echo " The app version is : ${appVersion}"
+            }
+        }
         //     stage('zip'){
         //         steps{
         //             sh """
