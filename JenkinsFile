@@ -8,7 +8,7 @@ pipeline{
         ansiColor('xterm')
     }
     // environment{
-    //     def appVersion = ''
+    //     def appVersion = ''  # instead of using here for global we have env to use for safer option 
     // }
 
     stages{
@@ -19,7 +19,7 @@ pipeline{
                     def appVersion = packageJson.version
                     echo "the app version is : ${appVersion}"
 
-                    env.APP_VERSION = appVersion 
+                    env.APP_VERSION = appVersion  
                 }
             }
         }
