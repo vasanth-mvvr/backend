@@ -10,39 +10,47 @@ pipeline{
     environment{
         def appVersion = ''
     }
+
     stages{
-        stage('Version'){
+        // stage('Version'){
+        //     steps{
+        //         script{
+        //             def packageJson = readJSON file: 'package.json'
+        //             appVersion = packageJson.version
+        //             echo " The app version is : ${appVersion}"
+        //         }
+        //     }
+        // }
+        // stage('Install Dependencies'){
+        //     steps{
+        //         sh """
+        //             This is test message
+        //             echo " The app version is : ${appVersion}"
+        //             ls -ltr
+        //             npm install
+                
+        //         """
+        //     }
+        // }
+        //     stage('zip'){
+        //         steps{
+        //             sh """
+        //             zip -q -r backend-${appVersion}.zip * -x JenkinsFile -x backend-${appVersion}.zip
+        //             ls -ltr
+        //             """
+        //         }
+        //     }
+        stage('test'){
             steps{
-                script{
-                    def packageJson = readJSON file: 'package.json'
-                    appVersion = packageJson.version
-                    echo " The app version is : ${appVersion}"
-                }
+                echo "this is test stage"
             }
         }
-        stage('Install Dependencies'){
-            steps{
-                sh """
-                    This is test message
-                    echo " The app version is : ${appVersion}"
-                    ls -ltr
-                    npm install
-                
-                """
-            }
-            stage('zip'){
-                steps{
-                    sh """
-                    zip -q -r backend-${appVersion}.zip * -x JenkinsFile -x backend-${appVersion}.zip
-                    ls -ltr
-                    """
-                }
-            }
-
+        
+        }
 
         post{
             always {
-                
+                echo ' i always say hello'
                 deleteDir()
             }
             success{
@@ -52,5 +60,5 @@ pipeline{
                 echo 'failure'
             }
         }
-    }
+    
 }
