@@ -19,7 +19,7 @@ pipeline{
                     def appVersion = packageJson.version
                     echo "the app version is : ${appVersion}"
 
-                    env.APP_VERSION = ${appVersion} 
+                    env.APP_VERSION = appVersion 
                 }
             }
         }
