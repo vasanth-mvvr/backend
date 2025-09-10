@@ -42,7 +42,11 @@ pipeline{
         //     }
         stage('test'){
             steps{
+                
+                sh """
+                ls -ltr
                 echo "this is test stage"
+                """
             }
         }
         
