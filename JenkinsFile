@@ -54,7 +54,7 @@ pipeline{
                         version: "${APP_VERSION}",
                         repository: 'backend',
                         // see to that the credentials are created in the jenkins settings credentials
-                        credentialsId: 'nexus-auth',
+                        credentialsId: 'nexus_auth',
                         artifacts:[
                                 [artifactId: 'backend',
                                 classifier: '',
