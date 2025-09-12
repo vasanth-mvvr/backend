@@ -66,16 +66,16 @@ pipeline{
                 }
             }
         }
-        // stage('Deploy'){
-        //     steps{
-        //         script{
-        //                 def params = [
-        //                     string(name: 'app_VERSION', value: "${APP_VERSION}" )
-        //                 ]
-        //                 buildjob: 'backend-deploy', parameters: params, wait: false
-        //         }
-        //     } 
-        // }
+        stage('Deploy'){
+            steps{
+                script{
+                        def params = [
+                            string(name: 'app_VERSION', value: "${APP_VERSION}" )
+                        ]
+                        buildjob: 'backend--deploy', parameters: params, wait: false
+                }
+            } 
+        }
         
     }
 
