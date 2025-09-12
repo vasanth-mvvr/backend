@@ -7,9 +7,11 @@ pipeline{
         disableConcurrentBuilds()
         ansiColor('xterm')
     }
-    // environment{
+     environment{
     //     def appVersion = ''  # instead of using here for global we have env to use for safer option 
-    // }
+           // see to that the nexus is created and the url is supplied here
+           def nexusUrl = 'http://54.234.217.42:8081/repository/backend/' 
+     } 
 
     stages{
         stage('version'){
@@ -40,6 +42,39 @@ pipeline{
                 ls -ltr
                 """
             }
+        }
+        stage('Nexus Artifact Upload'){
+            steps{
+                script{
+                    nexusArtifactUploader(
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        nexusUrl: "${nexusUrl}",
+                        groupId: 'com.expense',
+                        version: "${APP_VERSION}",
+                        repository: 'backend',
+                        // see to that the credentials are created in the jenkins settings credentials
+                        credentialsId: 'nexus-auth',
+                        artifacts:[
+                                [artifactId: 'backend',
+                                classifier: '',
+                                file: 'backend-'+"${APP_VERSION}"+'.zip',
+                                type: 'zip']
+
+                        ] 
+                    )
+                }
+            }
+        }
+        stage('Deploy'){
+            steps{
+                script{
+                        def params = [
+                            string(name: 'app_VERSION', value: "${APP_VERSION}" )
+                        ]
+                        buildjob: 'backend-deploy', parameters: params, wait: false
+                }
+            } 
         }
         
     }
