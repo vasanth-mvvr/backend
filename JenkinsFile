@@ -10,7 +10,7 @@ pipeline{
      environment{
     //     def appVersion = ''  # instead of using here for global we have env to use for safer option 
            // see to that the nexus is created and the url is supplied here
-           def nexusUrl = 'http://54.234.217.42:8081/repository/backend/' 
+           def nexusUrl = '54.234.217.42:8081' 
      } 
 
     stages{
