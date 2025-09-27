@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: configMap
+metadata:
+  name: backend
+  namespace: expense
+data:
+  DB_HOST: db-dev.vasanthreddy.space
+#  DB_HOST: mysql # mysql service component 

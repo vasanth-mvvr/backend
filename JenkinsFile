@@ -10,7 +10,9 @@ pipeline{
      environment{
     //     def appVersion = ''  # instead of using here for global we have env to use for safer option 
            // see to that the nexus is created and the url is supplied here
-           def nexusUrl = '54.234.217.42:8081' 
+           def nexusUrl = 'nexus.vasanthreddy.space' 
+           region = 'us-east-1'
+           account_id = '656902114881' // To be given 
      } 
     parameters{
         booleanParam(name: 'deploy',defaultValue: false, description: 'The defalut wont triggle until it is true')
@@ -48,10 +50,28 @@ pipeline{
         stage('Docker Build'){
             steps{
                 sh """
-                docker build -t backend:${APP_VERSION} .
+                    aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${account_id}.dkr.ecr.${region}.amazonaws.com
+
+                    docker build -t ${account_id}.dkr.ecr.${region}.amazonaws.com/expense-backend:${APP_VERSION}
+
+                    docker push ${account_id}.dkr.ecr.${region}.amazonaws.com/expense-backend:${APP_VERSION}
                 """
             }
 
+        }
+        stage('Deploy'){
+            steps{
+                sh """
+                    aws eks update-kubeconfig --region us-east-1 --name expense-dev
+                    cd helm 
+                    sed -i 's/IMAGE_VERSION/${APP_VERSION}/g' values.yaml  
+                    helm install frontend .  
+
+                
+                """
+                // helm upgrade frontend .   
+                // Only for the first time we will install later we will opt to upgrade
+            }
         }
 /*         stage('sonar scan'){
             environment{
@@ -110,9 +130,9 @@ pipeline{
                 }
             } 
         }
-        
+ */       
     }
- */
+ 
         post{
             always {
                 echo ' i always say hello'
