@@ -12,7 +12,9 @@ pipeline{
            // see to that the nexus is created and the url is supplied here
            def nexusUrl = '54.234.217.42:8081' 
      } 
-
+    parameters{
+        booleanParam(name: 'deploy',defaultValue: false, description: 'The defalut wont triggle until it is true')
+    }
     stages{
         stage('version'){
             steps{
@@ -43,7 +45,34 @@ pipeline{
                 """
             }
         }
-        stage('Nexus Artifact Upload'){
+        stage('Docker Build'){
+            steps{
+                sh """
+                docker build -t backend:${APP_VERSION} .
+                """
+            }
+
+        }
+/*         stage('sonar scan'){
+            environment{
+                scannerHome = tool 'sonar'  // referring cli
+            }
+            steps{
+                script{
+                    withSonarQubeEnv('sonar'){    // referreing sonar server 
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
+        stage{
+            steps{                                  // so here it checks if quality gate fails to check that we need add webhook in the sonarqube
+                timeout(time: 30,unit: 'MINUTES')
+                waitForQualityGate abortPipeline: true
+            }
+        } */
+
+/*         stage('Nexus Artifact Upload'){
             steps{
                 script{
                     nexusArtifactUploader(
@@ -65,8 +94,13 @@ pipeline{
                     )
                 }
             }
-        }
-        stage('Deploy'){
+        } */
+ /*        stage('Deploy'){
+            when{
+                expression{
+                    params.deploy 
+                }
+            }
             steps{
                 script{
                         def params = [
@@ -78,7 +112,7 @@ pipeline{
         }
         
     }
-
+ */
         post{
             always {
                 echo ' i always say hello'
