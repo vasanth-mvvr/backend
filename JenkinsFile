@@ -9,3 +9,10 @@ def configMap = [
 ]
 
 pipelineDecision.decidePipeline(configMap)
+
+if(! env.BRANCH_NAME.equalsIgnorecase('main')){
+    pipelineDecision.decidePipeline(configMap)   
+}
+else{
+    echo "Proceed with non-production or cr pipeline"
+}
